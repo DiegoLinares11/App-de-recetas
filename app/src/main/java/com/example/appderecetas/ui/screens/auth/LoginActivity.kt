@@ -1,4 +1,4 @@
-package com.example.appderecetas.auth
+package com.example.appderecetas.ui.screens.auth
 
 import android.content.Context
 import androidx.compose.foundation.layout.*

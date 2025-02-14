@@ -1,4 +1,4 @@
-package com.example.appderecetas.models
+package com.example.appderecetas.ui.screens.models
 
 data class Recipe(
     val id: Int,

@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.appderecetas.auth.LoginScreen
-import com.example.appderecetas.recipes.MainScreen
+import com.example.appderecetas.ui.screens.auth.LoginScreen
+import com.example.appderecetas.ui.screens.MainScreen
 
 sealed class AppScreens(val route: String) {
     object LoginScreen : AppScreens("login")
