@@ -6,16 +6,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.example.appderecetas.navigation.AppScreens
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(onLoginSuccess: () -> Unit, context: Context) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -29,29 +26,28 @@ fun LoginScreen(navController: NavController) {
             onValueChange = { email = it },
             label = { Text("Email") }
         )
+
         Spacer(modifier = Modifier.height(16.dp))
+
         TextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Contraseña") }
+            label = { Text("Contraseña") },
+            visualTransformation = PasswordVisualTransformation()
         )
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(24.dp))
+
         Button(onClick = {
             if (email == "info@koalit.dev" && password == "koalit123") {
-                saveSession(context)
-                navController.navigate(AppScreens.MainScreen.route)
-            } else {
-                // Mostrar un mensaje de error
+                context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+                    .edit()
+                    .putBoolean("isLoggedIn", true)
+                    .apply()
+                onLoginSuccess()
             }
         }) {
             Text("Iniciar Sesión")
         }
     }
-}
-
-private fun saveSession(context: Context) {
-    val sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
-    val editor = sharedPreferences.edit()
-    editor.putBoolean("isLoggedIn", true)
-    editor.apply()
 }

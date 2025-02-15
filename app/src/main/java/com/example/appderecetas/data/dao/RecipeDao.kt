@@ -24,6 +24,12 @@ interface RecipeDao {
     @Delete
     suspend fun deleteRecipe(recipe: RecipeEntity)
 
+    @Query("SELECT * FROM recipes ORDER BY preparationTime ASC")
+    suspend fun getRecipesSortedByTimeAsc(): List<RecipeEntity>
+
+    @Query("SELECT * FROM recipes ORDER BY preparationTime DESC")
+    suspend fun getRecipesSortedByTimeDesc(): List<RecipeEntity>
+
     @Query("SELECT * FROM recipes WHERE isFavorite = 1")
     fun getFavoriteRecipes(): Flow<List<RecipeEntity>>  // Usa Flow aquí también
 }
