@@ -33,6 +33,8 @@ fun MainScreen(navController: NavController, context: Context) {
     val recipes by viewModel.allRecipes.observeAsState(emptyList())
     var showFavorites by remember { mutableStateOf(false) }
     var sortAscending by remember { mutableStateOf(true) }
+    val favorites by viewModel.favorites.observeAsState(emptyList()) // Observar favoritos
+    val sortedRecipes by viewModel.sortedRecipes.observeAsState(emptyList()) // Observar recetas ordenadas
 
     Column(
         modifier = Modifier
@@ -96,8 +98,9 @@ fun MainScreen(navController: NavController, context: Context) {
 
         // Lista de recetas
         LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
-            items(if (showFavorites) viewModel.favorites.value ?: emptyList()
-            else viewModel.sortedRecipes.value ?: recipes) { recipe ->
+            items(
+                if (showFavorites) favorites else sortedRecipes.ifEmpty { recipes }
+            ) { recipe ->
                 RecipeItem(recipe = recipe, onFavoriteClick = { viewModel.toggleFavorite(recipe) })
             }
         }

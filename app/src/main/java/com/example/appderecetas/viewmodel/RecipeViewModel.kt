@@ -22,7 +22,7 @@ class RecipeViewModel @Inject constructor(
     private val _allRecipes = repository.getAllRecipes().asLiveData()
     val allRecipes: LiveData<List<RecipeEntity>> get() = _allRecipes
 
-    private val _favorites = repository.getFavorites().asLiveData()
+    private var _favorites = repository.getFavorites().asLiveData()
     val favorites: LiveData<List<RecipeEntity>> get() = _favorites
 
     private val _sortedRecipes = MutableLiveData<List<RecipeEntity>>()
@@ -33,6 +33,8 @@ class RecipeViewModel @Inject constructor(
             repository.updateRecipe(recipe.copy(isFavorite = !recipe.isFavorite))
         }
     }
+
+
 
     fun sortRecipes(ascending: Boolean = true) {
         viewModelScope.launch {

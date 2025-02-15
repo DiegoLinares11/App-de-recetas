@@ -31,5 +31,5 @@ interface RecipeDao {
     suspend fun getRecipesSortedByTimeDesc(): List<RecipeEntity>
 
     @Query("SELECT * FROM recipes WHERE isFavorite = 1")
-    fun getFavoriteRecipes(): Flow<List<RecipeEntity>>  // Usa Flow aquí también
+    fun getFavoriteRecipes(): Flow<List<RecipeEntity>>
 }
