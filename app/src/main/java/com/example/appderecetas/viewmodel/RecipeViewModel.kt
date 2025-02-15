@@ -1,13 +1,11 @@
 package com.example.appderecetas.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.appderecetas.data.database.AppDatabase
 import com.example.appderecetas.data.entity.RecipeEntity
 import com.example.appderecetas.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +32,11 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-
+    fun deleteRecipe(recipe: RecipeEntity) {
+        viewModelScope.launch {
+            repository.deleteRecipe(recipe)
+        }
+    }
 
     fun sortRecipes(ascending: Boolean = true) {
         viewModelScope.launch {
@@ -47,13 +49,14 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-    fun insertRecipe(title: String, description: String, time: Int) {
+    fun insertRecipe(title: String, description: String, time: Int, imageUri: String? = null) {
         viewModelScope.launch {
             val recipe = RecipeEntity(
                 title = title.trim(),
                 description = description.trim(),
                 preparationTime = time,
-                isFavorite = false
+                isFavorite = false,
+                imageUri = imageUri
             )
             repository.insertRecipe(recipe)
         }

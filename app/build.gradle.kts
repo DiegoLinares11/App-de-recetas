@@ -3,7 +3,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
     alias(libs.plugins.hilt.android)
+    id("com.google.gms.google-services") // Google Services para Firebase
+
 }
+
 
 android {
     namespace = "com.example.appderecetas"
@@ -31,6 +34,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -52,7 +56,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -74,13 +77,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.room.runtime)
-    kapt(libs.androidx.room.compiler) // Anotación para Room
-    implementation(libs.androidx.room.ktx) // Soporte para corrutinas en Room
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
     implementation(libs.coil.compose)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.compose.icons.extended)
+    // Firebase
+    //implementation(libs.firebase.bom)
+    //implementation(libs.firebase.analytics)
+    //implementation(libs.firebase.auth)
+    //implementation(libs.firebase.firestore)
+    //implementation("com.google.firebase:firebase-appdistribution")
 }
-
-

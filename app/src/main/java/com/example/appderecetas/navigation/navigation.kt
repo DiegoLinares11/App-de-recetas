@@ -2,7 +2,6 @@ package com.example.appderecetas.navigation
 
 import android.content.Context
 import androidx.compose.runtime.*
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController

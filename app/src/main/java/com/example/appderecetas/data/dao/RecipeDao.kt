@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.Flow
 interface RecipeDao {
     // Devuelve Flow para observar cambios en tiempo real
     @Query("SELECT * FROM recipes")
-    fun getAllRecipes(): Flow<List<RecipeEntity>>  // Usa Flow en lugar de suspend fun
+    fun getAllRecipes(): Flow<List<RecipeEntity>>
 
-    // Operaciones de escritura siguen siendo suspend
+
     @Insert
     suspend fun insertRecipe(recipe: RecipeEntity)
 

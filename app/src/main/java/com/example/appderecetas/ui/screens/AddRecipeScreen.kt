@@ -1,28 +1,35 @@
 package com.example.appderecetas.ui.screens
 
-import android.content.Context
+
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Photo
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.Title
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.appderecetas.viewmodel.RecipeViewModel
 import com.example.appderecetas.R
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import coil.compose.rememberImagePainter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,6 +39,15 @@ fun AddRecipeScreen(onBack: () -> Unit) {
     var description by remember { mutableStateOf("") }
     var time by remember { mutableStateOf("") }
     var isTimeValid by remember { mutableStateOf(true) }
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    // Launcher para seleccionar imagen
+
+    val pickImageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        imageUri = uri
+    }
+
     val isFormValid = title.isNotBlank() &&
             description.isNotBlank() &&
             time.toIntOrNull()?.let { it > 0 } ?: false
@@ -76,7 +92,42 @@ fun AddRecipeScreen(onBack: () -> Unit) {
                 modifier = Modifier.weight(1f)
             )
         }
+        Spacer(modifier = Modifier.height(16.dp))
+    // Botón para seleccionar imagen
+        Button(
+            onClick = { pickImageLauncher.launch("image/*") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            )
+        ) {
+            Icon(Icons.Default.Photo, contentDescription = "Imagen")
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Seleccionar imagen")
+        }
 
+        // Previsualización de imagen seleccionada
+        imageUri?.let { uri ->
+            Spacer(modifier = Modifier.height(16.dp))
+            Image(
+                painter = rememberImagePainter(uri),
+                contentDescription = "Previsualización",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale =  ContentScale.Crop
+            )
+
+            // Botón para quitar imagen
+            TextButton(
+                onClick = { imageUri = null },
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text("Quitar imagen", color = Color.Red)
+            }
+        }
         Spacer(modifier = Modifier.height(24.dp))
 
         // Campo de Título
